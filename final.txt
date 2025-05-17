@@ -1,0 +1,21 @@
+Python Code Hint
+import csv
+from datetime import datetime
+
+def load_transactions(filename='financial_transactions.csv'):
+    """Load transactions from a CSV file into a list of dictionaries."""
+    transactions = []
+    # Open file with 'with' statement
+    # Use csv.DictReader
+    # For each row:
+    #   Parse date with datetime.strptime
+    #   Make amount negative for 'debit'
+    #   Create dictionary with all fields
+    #   Add to transactions
+    # Catch FileNotFoundError, ValueError
+    return transactions
+Tips:
+
+csv.DictReader reads rows as dictionaries.
+Use datetime.strptime(date_str, '%Y-%m-%d') for dates.
+Make amounts negative for ‘debit’ to reflect expenses.
