@@ -14,6 +14,8 @@ def load_transactions(filename='financial_transactions.csv'):
                     date = datetime.strptime(row[0], '%Y-%m-%d')
                     amount = float(row[1])
                     transaction_type = row[2].lower()
+                    if transaction_type == 'debit':
+                        amount = -amount
                     transaction = {
                         'date': date,
                         'amount': amount,
@@ -22,7 +24,6 @@ def load_transactions(filename='financial_transactions.csv'):
                     }
                     transactions.append(transaction)
                 except (ValueError, IndexError):
-                    # Silently skip invalid rows
                     continue
         
         # Display loaded transactions
@@ -71,8 +72,8 @@ def add_transaction(transactions, transaction):
         # Print summary
         print(f"\nTransaction added: {date.strftime('%Y-%m-%d')} - ${transaction['amount']:.2f} - {transaction['description']}")
         print(f"Total transactions: {len(transactions)}")
-        print(f"Total debits: ${sum(t['amount'] for t in transactions if t['type'] == 'debit'):.2f}")
-        print(f"Total credits: ${sum(t['amount'] for t in transactions if t['type'] == 'credit'):.2f}")
+        print(f"Total spent: ${sum(t['amount'] for t in transactions if t['amount'] < 0):.2f}")
+        print(f"Total earned: ${sum(t['amount'] for t in transactions if t['amount'] > 0):.2f}")
         print("\nNote: Changes are not saved to file until you choose option 7 (Save Transactions)")
         
         return transactions
@@ -132,6 +133,9 @@ def update_transaction(transactions):
         
         amount = float(input("Enter new amount: "))
         transaction_type = input("Enter transaction type (credit/debit): ").lower()
+        if transaction_type == 'debit':
+            amount = -amount
+            
         description = input("Enter new description: ")
         
         # Update the transaction
@@ -284,18 +288,20 @@ def save_transactions(transactions, filename='financial_transactions.csv'):
             writer = csv.writer(file)
             writer.writerow(['Date', 'Amount', 'Type', 'Description'])
             for t in transactions:
+                amount = abs(t['amount'])
+                transaction_type = 'credit' if t['amount'] > 0 else 'debit'
                 writer.writerow([
                     t['date'].strftime('%Y-%m-%d'),
-                    t['amount'],
-                    t['type'],
+                    amount,
+                    transaction_type,
                     t['description']
                 ])
         
         # Generate report
         with open('report.txt', 'w') as report:
             # Calculate totals
-            total_debits = sum(t['amount'] for t in transactions if t['type'] == 'debit')
-            total_credits = sum(t['amount'] for t in transactions if t['type'] == 'credit')
+            total_debits = abs(sum(t['amount'] for t in transactions if t['amount'] < 0))
+            total_credits = sum(t['amount'] for t in transactions if t['amount'] > 0)
             net_balance = total_credits - total_debits
             total_amount = total_debits + total_credits
             
@@ -327,7 +333,7 @@ def save_transactions(transactions, filename='financial_transactions.csv'):
             report.write("-" * 80 + "\n")
             report.write(f"{'Date':<12} {'Amount':<15} {'Description':<40}\n")
             report.write("-" * 80 + "\n")
-            credit_transactions = [t for t in transactions if t['type'] == 'credit']
+            credit_transactions = [t for t in transactions if t['amount'] > 0]
             for t in sorted(credit_transactions, key=lambda x: x['date']):
                 report.write(f"{t['date'].strftime('%Y-%m-%d'):<12} ${t['amount']:<14.2f} {t['description']:<40}\n")
             
@@ -336,9 +342,9 @@ def save_transactions(transactions, filename='financial_transactions.csv'):
             report.write("-" * 80 + "\n")
             report.write(f"{'Date':<12} {'Amount':<15} {'Description':<40}\n")
             report.write("-" * 80 + "\n")
-            debit_transactions = [t for t in transactions if t['type'] == 'debit']
+            debit_transactions = [t for t in transactions if t['amount'] < 0]
             for t in sorted(debit_transactions, key=lambda x: x['date']):
-                report.write(f"{t['date'].strftime('%Y-%m-%d'):<12} ${t['amount']:<14.2f} {t['description']:<40}\n")
+                report.write(f"{t['date'].strftime('%Y-%m-%d'):<12} ${abs(t['amount']):<14.2f} {t['description']:<40}\n")
             
             # Write monthly summary
             report.write("\nMONTHLY SUMMARY\n")
@@ -346,11 +352,11 @@ def save_transactions(transactions, filename='financial_transactions.csv'):
             current_month = datetime.now().month
             current_year = datetime.now().year
             
-            month_debits = sum(t['amount'] for t in transactions 
-                             if t['type'] == 'debit' and t['date'].month == current_month 
-                             and t['date'].year == current_year)
+            month_debits = abs(sum(t['amount'] for t in transactions 
+                                 if t['amount'] < 0 and t['date'].month == current_month 
+                                 and t['date'].year == current_year))
             month_credits = sum(t['amount'] for t in transactions 
-                              if t['type'] == 'credit' and t['date'].month == current_month 
+                              if t['amount'] > 0 and t['date'].month == current_month 
                               and t['date'].year == current_year)
             month_total = month_debits + month_credits
             month_net = month_credits - month_debits
@@ -388,11 +394,4 @@ def generate_report(transactions):
     print(f"Total spent by category: {sum(t['amount'] for t in transactions if t['amount'] < 0 and t['type'] == 'debit'):.2f}")
     print(f"Total earned by category: {sum(t['amount'] for t in transactions if t['amount'] > 0 and t['type'] == 'credit'):.2f}")
     print(f"Total spent by month: {sum(t['amount'] for t in transactions if t['amount'] < 0 and t['date'].month == datetime.now().month):.2f}")
-    # TODO: Include a list of transactions
-    # TODO: Include a list of categories
-    # TODO: Include a list of months
-    # TODO: Include a list of years
-    # TODO: Include a list of days
-    # TODO: Include a list of hours
-    # TODO: Include a list of minutes
     pass
