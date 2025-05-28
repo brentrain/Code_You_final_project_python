@@ -1,0 +1,33 @@
+2025-05-28 11:23:14,270 - finance_app - INFO - Starting Smart Personal Finance Analyzer
+2025-05-28 11:23:17,092 - finance_app - INFO - Loading transactions from file
+2025-05-28 11:23:17,093 - finance_app - INFO - Attempting to load transactions from financial_transactions.csv
+2025-05-28 11:23:17,103 - finance_app - INFO - Successfully loaded 4 transactions
+2025-05-28 11:23:48,985 - finance_app - INFO - Analyzing finances
+2025-05-28 11:25:26,345 - finance_app - INFO - Analyzing finances
+2025-05-28 11:25:34,011 - finance_app - INFO - Exiting application
+2025-05-28 11:25:43,758 - finance_app - INFO - Starting Smart Personal Finance Analyzer
+2025-05-28 11:25:45,163 - finance_app - INFO - Loading transactions from file
+2025-05-28 11:25:45,163 - finance_app - INFO - Attempting to load transactions from financial_transactions.csv
+2025-05-28 11:25:45,172 - finance_app - INFO - Successfully loaded 4 transactions
+2025-05-28 11:25:50,146 - finance_app - INFO - Starting new transaction entry
+2025-05-28 11:26:02,747 - finance_app - DEBUG - Date entered: 2025-05-28
+2025-05-28 11:26:07,126 - finance_app - DEBUG - Amount entered: 97.0
+2025-05-28 11:26:13,083 - finance_app - DEBUG - Type entered: debit
+2025-05-28 11:26:20,563 - finance_app - DEBUG - Description entered: Lowes
+2025-05-28 11:26:20,564 - finance_app - DEBUG - Transaction object created: {'date': '2025-05-28', 'amount': 97.0, 'type': 'debit', 'description': 'Lowes'}
+2025-05-28 11:26:20,564 - finance_app - DEBUG - Processing transaction: {'date': '2025-05-28', 'amount': 97.0, 'type': 'debit', 'description': 'Lowes'}
+2025-05-28 11:26:20,564 - finance_app - DEBUG - Date parsed successfully: 2025-05-28 00:00:00
+2025-05-28 11:26:20,564 - finance_app - DEBUG - Transaction after date conversion: {'date': datetime.datetime(2025, 5, 28, 0, 0), 'amount': 97.0, 'type': 'debit', 'description': 'Lowes', 'id': 5}
+2025-05-28 11:26:20,565 - finance_app - INFO - Transaction added successfully. New total: 5
+2025-05-28 11:26:24,697 - finance_app - INFO - Saving transactions to file
+2025-05-28 11:26:24,698 - finance_app - INFO - Attempting to save 5 transactions to financial_transactions.csv
+2025-05-28 11:26:24,699 - finance_app - INFO - Transactions saved successfully
+2025-05-28 11:26:31,119 - finance_app - INFO - Analyzing finances
+2025-05-28 11:27:37,846 - finance_app - INFO - Exiting application
+2025-05-28 11:54:55,476 - finance_app - INFO - Starting Smart Personal Finance Analyzer
+2025-05-28 11:54:58,118 - finance_app - INFO - Loading transactions from file
+2025-05-28 11:54:58,118 - finance_app - INFO - Attempting to load transactions from financial_transactions.csv
+2025-05-28 11:54:58,133 - finance_app - INFO - Successfully loaded 5 transactions
+2025-05-28 11:55:04,535 - finance_app - INFO - Starting new transaction entry
+2025-05-28 11:55:09,498 - finance_app - ERROR - Invalid date format: 55-7700
+2025-05-28 11:55:53,431 - finance_app - INFO - Exiting application
