@@ -1,0 +1,11 @@
+2025-05-31 10:07:15,585 - finance_app - INFO - Starting Smart Personal Finance Analyzer
+2025-05-31 10:07:19,298 - finance_app - INFO - Deleting transaction
+2025-05-31 10:07:24,140 - finance_app - INFO - Loading transactions from file
+2025-05-31 10:07:24,140 - finance_app - INFO - Attempting to load transactions from financial_transactions.csv
+2025-05-31 10:07:24,158 - finance_app - INFO - Successfully loaded 5 transactions
+2025-05-31 10:07:37,008 - finance_app - INFO - Deleting transaction
+2025-05-31 10:07:44,265 - finance_app - INFO - Saving transactions to file
+2025-05-31 10:07:44,265 - finance_app - INFO - Attempting to save 4 transactions to financial_transactions.csv
+2025-05-31 10:07:44,267 - finance_app - INFO - Transactions saved successfully
+2025-05-31 10:07:50,257 - finance_app - INFO - Viewing transactions
+2025-05-31 10:09:15,225 - finance_app - INFO - Generating report

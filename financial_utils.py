@@ -13,7 +13,6 @@ def get_next_transaction_id():
 
 #Load Transactions  
 def load_transactions(filename='financial_transactions.csv'):
-    """Load transactions from a CSV file into a list of dictionaries."""
     transactions = []
     global transaction_counter
     try:
@@ -66,16 +65,6 @@ def load_transactions(filename='financial_transactions.csv'):
         return []
 
 #Add Transaction
-"""
-    Adds a new transaction to the list of transactions.
-
-    Parameters:
-    transactions (list): The current list of transactions.
-    new_transaction (dict): The transaction to be added.
-
-    Returns:
-    list: Updated list of transactions.
-    """
 def add_transaction(transactions, transaction):
     try:
         logger.debug(f"Processing transaction: {transaction}")
@@ -114,15 +103,7 @@ def add_transaction(transactions, transaction):
         return transactions
 
 #View transactions
-"""
-Example:
-To view all transactions, call the view_transactions function with a list of transactions:
-    transactions = [
-        {"date": "2024-03-20", "amount": 100.0, "description": "Groceries"},
-        {"date": "2024-03-21", "amount": 50.0, "description": "Gas"}
-    ]
-    view_transactions(transactions)
-"""
+
 def view_transactions(transactions):
     """Display transactions in a table."""
     if not transactions:
@@ -139,8 +120,6 @@ def view_transactions(transactions):
     
     print("-" * 80)
     return transactions
-
-
 
 #update transactions
 def update_transaction(transactions):
@@ -197,25 +176,6 @@ def update_transaction(transactions):
         return transactions
 
 #delete transactions
-def delete_transaction(transactions, transaction_id):
-    """
-    Delete a transaction from the list of transactions.
-
-    Parameters:
-    transactions (list): A list of transaction dictionaries.
-    transaction_id (int): The unique identifier of the transaction to be deleted.
-
-    Returns:
-    list: The updated list of transactions after the specified transaction is removed.
-
-    Example:
-    transactions = [
-        {"id": 1, "date": "2024-03-20", "amount": 100.0, "description": "Groceries"},
-        {"id": 2, "date": "2024-03-21", "amount": -50.0, "description": "Gas"}
-    ]
-    updated_transactions = delete_transaction(transactions, 2)
-    """
-    # Function implementation...
 def delete_transaction(transactions):
     """Delete a transaction from the list."""
     if not transactions:
