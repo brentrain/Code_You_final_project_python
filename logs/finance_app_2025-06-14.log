@@ -1,0 +1,21 @@
+2025-06-14 08:37:23,859 - finance_app - INFO - Starting Smart Personal Finance Analyzer
+2025-06-14 08:39:50,477 - finance_app - INFO - Exiting application
+2025-06-14 08:39:54,018 - finance_app - INFO - Starting Smart Personal Finance Analyzer
+2025-06-14 08:40:18,708 - finance_app - INFO - Starting new transaction entry
+2025-06-14 08:40:38,809 - finance_app - DEBUG - Date entered: 2026-06-14
+2025-06-14 08:40:43,021 - finance_app - DEBUG - Amount entered: 45.0
+2025-06-14 08:40:46,706 - finance_app - DEBUG - Type entered: credit
+2025-06-14 08:40:52,591 - finance_app - DEBUG - Description entered: Groceries
+2025-06-14 08:40:52,592 - finance_app - DEBUG - Transaction object created: {'date': '2026-06-14', 'amount': 45.0, 'type': 'credit', 'description': 'Groceries'}
+2025-06-14 08:40:52,592 - finance_app - DEBUG - Processing transaction: {'date': '2026-06-14', 'amount': 45.0, 'type': 'credit', 'description': 'Groceries'}
+2025-06-14 08:40:52,603 - finance_app - DEBUG - Date parsed successfully: 2026-06-14 00:00:00
+2025-06-14 08:40:52,604 - finance_app - DEBUG - Transaction after date conversion: {'date': datetime.datetime(2026, 6, 14, 0, 0), 'amount': 45.0, 'type': 'credit', 'description': 'Groceries', 'id': 1}
+2025-06-14 08:40:52,604 - finance_app - INFO - Transaction added successfully. New total: 1
+2025-06-14 08:40:58,640 - finance_app - INFO - Saving transactions to file
+2025-06-14 08:40:58,640 - finance_app - INFO - Attempting to save 1 transactions to financial_transactions.csv
+2025-06-14 08:40:58,642 - finance_app - INFO - Transactions saved successfully
+2025-06-14 08:41:03,549 - finance_app - INFO - Deleting transaction
+2025-06-14 08:41:14,878 - finance_app - INFO - Analyzing finances
+2025-06-14 08:41:25,494 - finance_app - INFO - Analyzing finances
+2025-06-14 08:41:31,258 - finance_app - INFO - Generating report
+2025-06-14 08:42:52,769 - finance_app - INFO - Exiting application

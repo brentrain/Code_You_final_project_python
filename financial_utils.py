@@ -218,80 +218,119 @@ def delete_transaction(transactions):
 
 #analyze finances
 def analyze_finances(transactions):
-    """
-    Analyze financial transactions with detailed breakdowns and percentages.
-
-    Parameters:
-    transactions (list): A list of transaction dictionaries, where each dictionary contains:
-        - 'id' (int): Unique identifier for the transaction.
-        - 'date' (str): Date of the transaction in YYYY-MM-DD format.
-        - 'amount' (float): Transaction amount (positive for credits, negative for debits).
-        - 'description' (str): Description of the transaction.
-
-    Returns:
-    None: This function outputs the financial analysis directly to the console, including:
-        - Total debits and credits
-        - Percentage breakdown of each transaction relative to the total amount
-    """
-    # Function implementation...
-def analyze_finances(transactions):
     """Analyze finances with detailed breakdowns and percentages."""
     if not transactions:
         print("\nNo transactions to analyze. Please add some transactions first.")
         return transactions
 
-    # Calculate totals
-    total_debits = abs(sum(t['amount'] for t in transactions if t['amount'] < 0))
-    total_credits = sum(t['amount'] for t in transactions if t['amount'] > 0)
-    total_amount = total_debits + total_credits
+    try:
+        # Calculate totals
+        total_debits = abs(sum(t['amount'] for t in transactions if t['amount'] < 0))
+        total_credits = sum(t['amount'] for t in transactions if t['amount'] > 0)
+        total_amount = total_debits + total_credits
 
-    print("\nFINANCIAL ANALYSIS")
-    print("=" * 100)
-    
-    # Transaction List with Percentages
-    print("\nTRANSACTION LIST WITH PERCENTAGES")
-    print("-" * 100)
-    print(f"{'ID':<6} {'Date':<12} {'Amount':<10} {'Type':<8} {'Description':<30} {'% of Total':<10}")
-    print("-" * 100)
-    
-    # Sort transactions by ID
-    sorted_transactions = sorted(transactions, key=lambda x: x['id'])
-    
-    for t in sorted_transactions:
-        percentage = (abs(t['amount']) / total_amount * 100) if total_amount > 0 else 0
-        print(f"{t['id']:<6} {t['date'].strftime('%Y-%m-%d'):<12} ${t['amount']:<9.2f} {t['type']:<8} {t['description'][:30]:<30} {percentage:<9.1f}%")
-    
-    print("-" * 100)
-    
-    # Category Analysis
-    print("\nCATEGORY ANALYSIS")
-    print("-" * 100)
-    print(f"{'Category':<30} {'Amount':<12} {'Type':<8} {'% of Total':<10}")
-    print("-" * 100)
-    
-    # Get unique categories
-    categories = set(t['description'].lower() for t in transactions)
-    
-    for category in sorted(categories):
-        category_transactions = [t for t in transactions if t['description'].lower() == category]
-        category_amount = sum(t['amount'] for t in category_transactions)
-        category_percentage = (abs(category_amount) / total_amount * 100) if total_amount > 0 else 0
-        transaction_type = 'debit' if category_amount < 0 else 'credit'
+        print("\nFINANCIAL ANALYSIS")
+        print("=" * 100)
         
-        print(f"{category[:30]:<30} ${abs(category_amount):<11.2f} {transaction_type:<8} {category_percentage:<9.1f}%")
-    
-    print("-" * 100)
-    
-    # Summary Statistics
-    print("\nSUMMARY STATISTICS")
-    print("-" * 100)
-    print(f"Total Transactions: {len(transactions)}")
-    print(f"Total Debits:  ${total_debits:.2f} ({(total_debits/total_amount*100):.1f}% of total)")
-    print(f"Total Credits: ${total_credits:.2f} ({(total_credits/total_amount*100):.1f}% of total)")
-    print(f"Net Balance:   ${(total_credits - total_debits):.2f}")
-    
-    print("\n" + "=" * 100)
-    return transactions
+        # Transaction List with Percentages
+        print("\nTRANSACTION LIST WITH PERCENTAGES")
+        print("-" * 100)
+        print(f"{'ID':<6} {'Date':<12} {'Amount':<10} {'Type':<8} {'Description':<30} {'% of Total':<10}")
+        print("-" * 100)
+        
+        # Sort transactions by ID, handling potential missing IDs
+        sorted_transactions = sorted(transactions, key=lambda x: x.get('id', 0))
+        
+        for t in sorted_transactions:
+            try:
+                percentage = (abs(t['amount']) / total_amount * 100) if total_amount > 0 else 0
+                print(f"{t.get('id', 'N/A'):<6} {t['date'].strftime('%Y-%m-%d'):<12} ${t['amount']:<9.2f} {t['type']:<8} {t['description'][:30]:<30} {percentage:<9.1f}%")
+            except (KeyError, AttributeError) as e:
+                logger.error(f"Error processing transaction: {t}, Error: {str(e)}")
+                continue
+        
+        print("-" * 100)
+        
+        # Category Analysis
+        print("\nCATEGORY ANALYSIS")
+        print("-" * 100)
+        print(f"{'Category':<30} {'Amount':<12} {'Type':<8} {'% of Total':<10}")
+        print("-" * 100)
+        
+        # Get unique categories
+        categories = set(t['description'].lower() for t in transactions)
+        
+        for category in sorted(categories):
+            try:
+                category_transactions = [t for t in transactions if t['description'].lower() == category]
+                category_amount = sum(t['amount'] for t in category_transactions)
+                category_percentage = (abs(category_amount) / total_amount * 100) if total_amount > 0 else 0
+                transaction_type = 'debit' if category_amount < 0 else 'credit'
+                
+                print(f"{category[:30]:<30} ${abs(category_amount):<11.2f} {transaction_type:<8} {category_percentage:<9.1f}%")
+            except Exception as e:
+                logger.error(f"Error processing category {category}: {str(e)}")
+                continue
+        
+        print("-" * 100)
+        
+        # Monthly Analysis
+        print("\nMONTHLY ANALYSIS")
+        print("-" * 100)
+        
+        # Get all unique months from transactions
+        months = set((t['date'].year, t['date'].month) for t in transactions)
+        months = sorted(months, reverse=True)  # Most recent months first
+        
+        for year, month in months:
+            month_transactions = [t for t in transactions 
+                                if t['date'].year == year and t['date'].month == month]
+            
+            month_debits = abs(sum(t['amount'] for t in month_transactions if t['amount'] < 0))
+            month_credits = sum(t['amount'] for t in month_transactions if t['amount'] > 0)
+            month_total = month_debits + month_credits
+            
+            print(f"\n{datetime(year, month, 1).strftime('%B %Y')}")
+            print("-" * 80)
+            print(f"Total Transactions: {len(month_transactions)}")
+            print(f"Total Debits:  ${month_debits:.2f} ({(month_debits/month_total*100):.1f}% of month)")
+            print(f"Total Credits: ${month_credits:.2f} ({(month_credits/month_total*100):.1f}% of month)")
+            print(f"Net Balance:   ${(month_credits - month_debits):.2f}")
+            
+            # Monthly Category Breakdown
+            print("\nCategory Breakdown:")
+            print(f"{'Category':<30} {'Amount':<12} {'Type':<8} {'% of Month':<10}")
+            print("-" * 80)
+            
+            month_categories = set(t['description'].lower() for t in month_transactions)
+            for category in sorted(month_categories):
+                try:
+                    cat_transactions = [t for t in month_transactions if t['description'].lower() == category]
+                    cat_amount = sum(t['amount'] for t in cat_transactions)
+                    cat_percentage = (abs(cat_amount) / month_total * 100) if month_total > 0 else 0
+                    trans_type = 'debit' if cat_amount < 0 else 'credit'
+                    
+                    print(f"{category[:30]:<30} ${abs(cat_amount):<11.2f} {trans_type:<8} {cat_percentage:<9.1f}%")
+                except Exception as e:
+                    logger.error(f"Error processing monthly category {category}: {str(e)}")
+                    continue
+        
+        print("-" * 100)
+        
+        # Summary Statistics
+        print("\nOVERALL SUMMARY STATISTICS")
+        print("-" * 100)
+        print(f"Total Transactions: {len(transactions)}")
+        print(f"Total Debits:  ${total_debits:.2f} ({(total_debits/total_amount*100):.1f}% of total)")
+        print(f"Total Credits: ${total_credits:.2f} ({(total_credits/total_amount*100):.1f}% of total)")
+        print(f"Net Balance:   ${(total_credits - total_debits):.2f}")
+        
+        print("\n" + "=" * 100)
+        return transactions
+    except Exception as e:
+        logger.error(f"Error in analyze_finances: {str(e)}", exc_info=True)
+        print(f"\nError analyzing finances: {str(e)}")
+        return transactions
 
 #save transactions
 def save_transactions(transactions, filename='financial_transactions.csv'):
